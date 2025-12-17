@@ -9,3 +9,5 @@ The armor is slightly better than Netherrite, and the tools are a bit faster.
 Upon request, I can easily change all values and add more tools.
 
 In the config file, you can adjust all values and the recipe
+
+Command: /Dragon <Helmet|Chestplate|Leggings|boots|sword|pickaxe|shovel|axe|hoe|wings>
