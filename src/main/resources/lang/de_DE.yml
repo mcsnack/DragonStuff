@@ -1,0 +1,84 @@
+command:
+  no-permission: "<red>Dazu hast du keine Berechtigung.</red>"
+  player-only: "<red>Nur Spieler können diesen Befehl nutzen.</red>"
+  reload: "<green>DragonTrim Plugin neu geladen!</green>"
+
+items:
+  sword:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Sword</gradient>"
+    lore:
+      - "<gray>Geschmiedet aus Drachenmacht</gray>"
+      - "<dark_gray>Eine legendäre Waffe</dark_gray>"
+
+  pickaxe:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Pickaxe</gradient>"
+    lore:
+      - "<gray>Durchdrungen von Drachenenergie</gray>"
+      - "<dark_gray>Unvergleichliche Abbaugeschwindigkeit</dark_gray>"
+
+  axe:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Axe</gradient>"
+    lore:
+      - "<gray>Schneidet selbst Drachenknochen</gray>"
+      - "<dark_gray>Brutale Wucht</dark_gray>"
+
+  shovel:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Shovel</gradient>"
+    lore:
+      - "<gray>Bewegt Erde wie Sand</gray>"
+      - "<dark_gray>Werkzeug der Alten</dark_gray>"
+
+  hoe:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Hoe</gradient>"
+    lore:
+      - "<gray>Erweckt selbst tote Erde</gray>"
+      - "<dark_gray>Mythisches Werkzeug</dark_gray>"
+
+  wings:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Wings</gradient>"
+    lore:
+      - "<gray>Geschmiedet aus Drachenschuppen</gray>"
+      - "<dark_gray>Legendäre Flügel</dark_gray>"
+
+  trim:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Trim</gradient>"
+    lore:
+      - "<gray>Ein uraltes Relikt voller Macht</gray>"
+      - "<dark_gray>Nur Drachen würdig</dark_gray>"
+
+armor:
+  helmet:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Helmet</gradient>"
+    lore:
+      - "<gray>Geschmiedet aus Drachenmacht</gray>"
+      - "<dark_gray>Legendärer Schutz</dark_gray>"
+
+  chestplate:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Chestplate</gradient>"
+    lore:
+      - "<gray>Schuppen eines Urdrachen</gray>"
+      - "<dark_gray>Unzerstörbar</dark_gray>"
+
+  leggings:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Leggings</gradient>"
+    lore:
+      - "<gray>Von Drachenfeuer gehärtet</gray>"
+      - "<dark_gray>Leicht und stark</dark_gray>"
+
+  boots:
+    name: "<gradient:#ff8c00:#ffd700>Dragon Boots</gradient>"
+    lore:
+      - "<gray>Tragen dich wie Drachenflügel</gray>"
+      - "<dark_gray>Legendäres Schuhwerk</dark_gray>"
+
+messages:
+  give-sword: "<green>Du hast das <gold>Dragon Sword</gold> erhalten!</green>"
+  give-pickaxe: "<green>Du hast die <gold>Dragon Pickaxe</gold> erhalten!</green>"
+  give-axe: "<green>Du hast die <gold>Dragon Axe</gold> erhalten!</green>"
+  give-shovel: "<green>Du hast die <gold>Dragon Shovel</gold> erhalten!</green>"
+  give-hoe: "<green>Du hast die <gold>Dragon Hoe</gold> erhalten!</green>"
+  give-helmet: "<green>Du hast den <gold>Dragon Helmet</gold> erhalten!</green>"
+  give-chestplate: "<green>Du hast die <gold>Dragon Chestplate</gold> erhalten!</green>"
+  give-leggings: "<green>Du hast die <gold>Dragon Leggings</gold> erhalten!</green>"
+  give-boots: "<green>Du hast die <gold>Dragon Boots</gold> erhalten!</green>"
+  give-trim: "<green>Du hast das <gold>Dragon Trim</gold> erhalten!</green>"

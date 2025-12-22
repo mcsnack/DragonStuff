@@ -1,12 +1,11 @@
 package me.dragontrim;
 
+import me.dragontrim.lang.Lang;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-
-import java.util.List;
 
 public class DragonTrimItem {
 
@@ -16,12 +15,9 @@ public class DragonTrimItem {
 
         if (meta == null) return item;
 
-        meta.setDisplayName("§5§lDragon Trim");
+        meta.displayName(Lang.getComponent("items.trim.name"));
+        meta.lore(Lang.getComponentList("items.trim.lore"));
 
-        meta.setLore(List.of(
-                "§7Ein uraltes Relikt voller Macht",
-                "§8Nur Drachen würdig"
-        ));
 
         //  Markierung: DAS ist ein Dragon Trim
         meta.getPersistentDataContainer().set(
