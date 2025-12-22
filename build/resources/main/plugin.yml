@@ -1,0 +1,14 @@
+name: DragonTrim
+version: 1.0.0
+main: me.dragontrim.DragonTrim
+api-version: 1.21
+
+commands:
+  dragon:
+    description: Dragon items
+    usage: /dragon <trim|sword|pickaxe|axe|shovel|hoe|helmet|chestplate|leggings|boots|wings|reload>
+
+
+permissions:
+  dragontrim.admin:
+    default: op
