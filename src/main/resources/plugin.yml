@@ -6,7 +6,7 @@ api-version: 1.21
 commands:
   dragon:
     description: Dragon items
-    usage: /dragon <trim|sword|pickaxe|axe|shovel|hoe|helmet|chestplate|leggings|boots|wings>
+    usage: /dragon <trim|sword|pickaxe|axe|shovel|hoe|helmet|chestplate|leggings|boots|wings|reload>
 
 
 permissions:

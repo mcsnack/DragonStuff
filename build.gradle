@@ -3,8 +3,8 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
-group = 'DragonTrim'
-version = '1.0-SNAPSHOT'
+group = 'me.dragontrim'
+version = '1.0.3'
 
 repositories {
     mavenCentral()

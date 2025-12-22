@@ -1,10 +1,10 @@
 package me.dragontrim;
 
+import me.dragontrim.lang.Lang;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class DragonCommand implements CommandExecutor {
 
@@ -12,7 +12,7 @@ public class DragonCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("Nur Spieler können diesen Befehl nutzen.");
+            sender.sendMessage("§cNur Spieler können diesen Befehl nutzen.");
             return true;
         }
 
@@ -21,7 +21,14 @@ public class DragonCommand implements CommandExecutor {
             return true;
         }
 
-        // 🔹 Schritt 2: Argumente prüfen
+        // ✅ HIER rein (nach Permission, vor args.length == 0)
+        if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
+            DragonTrim.getInstance().reloadPlugin();
+            player.sendMessage("§aDragonTrim wurde neu geladen.");
+            return true;
+        }
+
+        // 🔽 ab hier dein bestehender Code
         if (args.length == 0) {
             player.sendMessage("§7Verwendung:");
             player.sendMessage("§5/dragon trim");
@@ -29,9 +36,8 @@ public class DragonCommand implements CommandExecutor {
             return true;
         }
 
-        // 🔹 Schritt 3: Subcommands
-        switch (args[0].toLowerCase()) {
 
+        switch (args[0].toLowerCase()) {
             case "trim" -> {
                 player.getInventory().addItem(DragonTrimItem.create());
                 player.sendMessage("§5Du hast das §lDragon Trim§5 erhalten!");
@@ -39,62 +45,74 @@ public class DragonCommand implements CommandExecutor {
 
             case "sword" -> {
                 player.getInventory().addItem(DragonItems.dragonSword());
-                player.sendMessage("§5Du hast das §lDragon Sword§5 erhalten!");
+                player.sendMessage(Lang.getComponent("messages.give-sword"));
             }
 
             case "pickaxe" -> {
                 player.getInventory().addItem(DragonItems.dragonPickaxe());
-                player.sendMessage("§5Du hast die §dDragon Pickaxe§5 erhalten!");
+                player.sendMessage(Lang.getComponent("messages.give-pickaxe"));
             }
 
             case "axe" -> {
                 player.getInventory().addItem(DragonItems.dragonAxe());
-                player.sendMessage("§5Du hast die §dDragon Axe§5 erhalten!");
+                player.sendMessage(Lang.getComponent("messages.give-axe"));
             }
 
             case "shovel" -> {
                 player.getInventory().addItem(DragonItems.dragonShovel());
-                player.sendMessage("§5Du hast die §dDragon Shovel§5 erhalten!");
+                player.sendMessage(Lang.getComponent("messages.give-shovel"));
             }
 
             case "hoe" -> {
                 player.getInventory().addItem(DragonItems.dragonHoe());
-                player.sendMessage("§5Du hast die §dDragon Hoe§5 erhalten!");
+                player.sendMessage(Lang.getComponent("messages.give-hoe"));
             }
 
             case "wings" -> {
                 player.getInventory().addItem(DragonItems.dragonWings());
-                player.sendMessage("§5Du hast die §dDragon Wings§5 erhalten!");
+                player.sendMessage(Lang.getComponent("messages.give-wings"));
             }
 
             case "helmet" -> {
                 player.getInventory().addItem(DragonItems.dragonHelmet());
-                player.sendMessage("§5Du hast den §dDragon Helmet§5 erhalten!");
+                player.sendMessage(Lang.getComponent("messages.give-helmet"));
             }
 
             case "chestplate" -> {
                 player.getInventory().addItem(DragonItems.dragonChestplate());
-                player.sendMessage("§5Du hast die §dDragon Chestplate§5 erhalten!");
+                player.sendMessage(Lang.getComponent("messages.give-chestplate"));
             }
 
             case "leggings" -> {
                 player.getInventory().addItem(DragonItems.dragonLeggings());
-                player.sendMessage("§5Du hast die §dDragon Leggings§5 erhalten!");
+                player.sendMessage(Lang.getComponent("messages.give-leggings"));
             }
 
             case "boots" -> {
                 player.getInventory().addItem(DragonItems.dragonBoots());
-                player.sendMessage("§5Du hast die §dDragon Boots§5 erhalten!");
+                player.sendMessage(Lang.getComponent("messages.give-boots"));
             }
+
+
+            case "reload" -> {
+                DragonTrim plugin = DragonTrim.getInstance();
+                plugin.reloadConfig();
+                Lang.reload(plugin);
+
+                player.sendMessage(Lang.getComponent("command.reload"));
+            }
+
 
 
             default -> {
                 player.sendMessage("§cUnbekanntes Argument.");
-                player.sendMessage("§7Verwendung: /dragon <trim|sword|wings>");
+                player.sendMessage("§7Verwendung: /dragon <trim|sword|wings[..]>");
             }
 
         }
 
         return true;
     }
+
+
 }

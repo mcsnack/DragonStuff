@@ -1,14 +1,34 @@
 package me.dragontrim;
 
+import me.dragontrim.lang.Lang;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
 public class DragonTrim extends JavaPlugin {
 
+    private static DragonTrim instance;
+
+    public static DragonTrim getInstance() {
+        return instance;
+    }
+
+    public void reloadPlugin() {
+        reloadConfig();  //Config Neuladen
+        Lang.load(this);    //sprache neu Laden
+        getLogger().info("DragonTrim reloaded (config + lang).");
+    }
+
+
     @Override
     public void onEnable() {
+        instance = this;
+
         // config.yml laden / erstellen
         saveDefaultConfig();
+
+        // Lang
+        Lang.load(this);
+
 
         // PersistentDataContainer Keys initialisieren
         PDCKeys.init(this);
@@ -26,6 +46,7 @@ public class DragonTrim extends JavaPlugin {
         getServer().getPluginManager().registerEvents(
                 new DragonSmithingListener(),
                 this
+
         );
 
 
@@ -58,4 +79,6 @@ public class DragonTrim extends JavaPlugin {
     public void onDisable() {
         getLogger().info("DragonTrim disabled!");
     }
+
+
 }

@@ -1,46 +1,25 @@
-names:
-  sword: "&6Dragon Sword"
-  axe: "&5Dragon Axe"
-  pickaxe: "&5Dragon Pickaxe"
-  shovel: "&5Dragon Shovel"
-  hoe: "&5Dragon Hoe"
-
-  helmet: "&5Dragon Helmet"
-  chestplate: "&5Dragon Chestplate"
-  leggings: "&5Dragon Leggings"
-  boots: "&5Dragon Boots"
-
-  wings: "&5Dragon Wings"
+# de_DE, en_US - You can add more, just copy the yml and translate
+language: de_DE
 
 required_material: DIAMOND
 
 setbonus:
   enabled: true
-  resistance_level: 1
 
-# Durabillity Abnutzung
-  durability:
-    armor:
-      reduction: 0.25   # 25 % weniger Haltbarkeitsschaden
-    tools:
-      reduction: 0.5   # 50 % weniger Haltbarkeitsschaden
+  # RESISTANCE, FIRE_RESISTANCE, STRENGTH, HASTE, REGENERATION, SPEED
+  effect: RESISTANCE
 
-# Damange und Abbau geschwindigkeit
+  # 0 = Level 1; 1 = Level 2
+  amplifier: 0
+  refresh_ticks: 20
+  duration_ticks: 60
 
-combat:
-  sword:
-    bonus_damage: 10.0
-    attack_speed: 2.0
-  axe:
-    bonus_damage: 15.0
-    attack_speed: 0.8
-  pickaxe:
-    bonus_damage: 8.0
-    attack_speed: 2.0
-  shovel:
-    bonus_damage: 8.0
-    attack_speed: 1.5
-  hoe:
-    bonus_damage: 2.0
-    attack_speed: 5.0
+  ambient: true
+  particles: false
+  icon: false
 
+durability:
+  armor:
+    reduction: 0.25   # 25 % less
+  tools:
+    reduction: 0.5    # 50 % less

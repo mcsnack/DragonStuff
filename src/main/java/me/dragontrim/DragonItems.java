@@ -1,16 +1,11 @@
 package me.dragontrim;
 
-import org.bukkit.ChatColor;
+import me.dragontrim.lang.Lang;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-
-
-import java.util.List;
 
 public final class DragonItems {
 
@@ -21,103 +16,97 @@ public final class DragonItems {
     // =========================
     public static ItemStack dragonSword() {
         ItemStack item = new ItemStack(Material.NETHERITE_SWORD);
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return item;
 
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6Dragon Sword"));
-        meta.setLore(List.of(
-                "§7Geschmiedet aus Drachenmacht",
-                "§8Eine legendäre Waffe"
-        ));
+        item.editMeta(meta -> {
+            meta.displayName(Lang.getComponent("items.sword.name"));
+            meta.lore(Lang.getComponentList("items.sword.lore"));
 
+            meta.getPersistentDataContainer().set(
+                    PDCKeys.DRAGON_TOOL,
+                    PersistentDataType.BYTE,
+                    (byte) 1
+            );
 
-
-        // 🔥 Dragon Armor markieren (PDC)
-        meta.getPersistentDataContainer().set(
-                PDCKeys.DRAGON_TOOL,
-                PersistentDataType.BYTE,
-                (byte) 1
-        );
-
-        item.setItemMeta(meta);
-        DragonToolAttributes.applyWeapon(item, "sword");
+            // ✅ +10 Damage | +2 Speed
+            DragonToolAttributes.applyWeapon(meta, 10.0, 2.0);
+        });
 
         return item;
     }
+
 
     // =========================
     // Dragon Pickaxe
     // =========================
     public static ItemStack dragonPickaxe() {
         ItemStack item = new ItemStack(Material.NETHERITE_PICKAXE);
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return item;
 
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6Dragon Pickaxe"));
+        item.editMeta(meta -> {
+            meta.displayName(Lang.getComponent("items.pickaxe.name"));
+            meta.lore(Lang.getComponentList("items.pickaxe.lore"));
 
+            meta.getPersistentDataContainer().set(
+                    PDCKeys.DRAGON_TOOL,
+                    PersistentDataType.BYTE,
+                    (byte) 1
+            );
 
-        // 🔥 Dragon Armor markieren (PDC)
-        meta.getPersistentDataContainer().set(
-                PDCKeys.DRAGON_TOOL,
-                PersistentDataType.BYTE,
-                (byte) 1
-        );
+            DragonToolAttributes.applyMiningEfficiency(meta, 50.0);
+        });
 
-        item.setItemMeta(meta);
-        DragonToolAttributes.applyWeapon(item, "pickaxe");
-        DragonToolAttributes.applyMiningEfficiency(item, 50.0);
         return item;
     }
+
 
     // =========================
     // Dragon Axe
     // =========================
     public static ItemStack dragonAxe() {
         ItemStack item = new ItemStack(Material.NETHERITE_AXE);
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return item;
 
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6Dragon Axe"));
+        item.editMeta(meta -> {
+            meta.displayName(Lang.getComponent("items.axe.name"));
+            meta.lore(Lang.getComponentList("items.axe.lore"));
 
+            meta.getPersistentDataContainer().set(
+                    PDCKeys.DRAGON_TOOL,
+                    PersistentDataType.BYTE,
+                    (byte) 1
+            );
 
-        // 🔥 Dragon Armor markieren (PDC)
-        meta.getPersistentDataContainer().set(
-                PDCKeys.DRAGON_TOOL,
-                PersistentDataType.BYTE,
-                (byte) 1
-        );
-
-        item.setItemMeta(meta);
-        DragonToolAttributes.applyWeapon(item, "axe");
-        DragonToolAttributes.applyMiningEfficiency(item, 50.0);
-
+            DragonToolAttributes.applyWeapon(meta, 15.0, 0.8);
+            DragonToolAttributes.applyMiningEfficiency(meta, 30.0);
+        });
 
         return item;
     }
+
+
+
 
     // =========================
     // Dragon Shovel
     // =========================
     public static ItemStack dragonShovel() {
         ItemStack item = new ItemStack(Material.NETHERITE_SHOVEL);
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return item;
 
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6Dragon Shovel"));
+        item.editMeta(meta -> {
+            meta.displayName(Lang.getComponent("items.shovel.name"));
+            meta.lore(Lang.getComponentList("items.shovel.lore"));
 
+            meta.getPersistentDataContainer().set(
+                    PDCKeys.DRAGON_TOOL,
+                    PersistentDataType.BYTE,
+                    (byte) 1
+            );
 
-        // 🔥 Dragon Armor markieren (PDC)
-        meta.getPersistentDataContainer().set(
-                PDCKeys.DRAGON_TOOL,
-                PersistentDataType.BYTE,
-                (byte) 1
-        );
+            DragonToolAttributes.applyMiningEfficiency(meta, 20.0);
+        });
 
-        item.setItemMeta(meta);
-        DragonToolAttributes.applyWeapon(item, "shovel");
-        DragonToolAttributes.applyMiningEfficiency(item, 50.0);
         return item;
     }
+
+
 
     // =========================
     // Dragon Hoe
@@ -125,25 +114,24 @@ public final class DragonItems {
     public static ItemStack dragonHoe() {
         ItemStack item = new ItemStack(Material.NETHERITE_HOE);
 
+        item.editMeta(meta -> {
+            meta.displayName(Lang.getComponent("items.hoe.name"));
+            meta.lore(Lang.getComponentList("items.hoe.lore"));
 
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return item;
+            meta.getPersistentDataContainer().set(
+                    PDCKeys.DRAGON_TOOL,
+                    PersistentDataType.BYTE,
+                    (byte) 1
+            );
 
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6Dragon Hoe"));
+            DragonToolAttributes.applyMiningEfficiency(meta, 15.0);
+        });
 
-
-        // 🔥 Dragon Armor markieren (PDC)
-        meta.getPersistentDataContainer().set(
-                PDCKeys.DRAGON_TOOL,
-                PersistentDataType.BYTE,
-                (byte) 1
-        );
-
-        item.setItemMeta(meta);
-        DragonToolAttributes.applyWeapon(item, "hoe");
-        DragonToolAttributes.applyMiningEfficiency(item, 50.0);
         return item;
     }
+
+
+
 
     // =========================
     // Dragon Wings (Elytra)
@@ -153,7 +141,11 @@ public final class DragonItems {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
 
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', "&6Dragon Wings"));
+        meta.displayName(Lang.getComponent("items.wings.name"));
+        meta.lore(Lang.getComponentList("items.wings.lore"));
+
+
+
         meta.setUnbreakable(true);
 
 
@@ -173,7 +165,9 @@ public final class DragonItems {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
 
-        meta.setDisplayName("§6Dragon Helmet");
+        meta.displayName(Lang.getComponent("armor.helmet.name"));
+        meta.lore(Lang.getComponentList("armor.helmet.lore"));
+
 
         // 🔥 Dragon Armor markieren (PDC)
         meta.getPersistentDataContainer().set(
@@ -202,7 +196,9 @@ public final class DragonItems {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
 
-        meta.setDisplayName("§6Dragon Chestplate");
+        meta.displayName(Lang.getComponent("armor.chestplate.name"));
+        meta.lore(Lang.getComponentList("armor.chestplate.lore"));
+
 
         // 🔥 Dragon Armor markieren (PDC)
         meta.getPersistentDataContainer().set(
@@ -232,7 +228,9 @@ public final class DragonItems {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
 
-        meta.setDisplayName("§6Dragon Leggings");
+        meta.displayName(Lang.getComponent("armor.leggings.name"));
+        meta.lore(Lang.getComponentList("armor.leggings.lore"));
+
 
         // 🔥 Dragon Armor markieren (PDC)
         meta.getPersistentDataContainer().set(
@@ -261,7 +259,8 @@ public final class DragonItems {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return item;
 
-        meta.setDisplayName("§6Dragon Boots");
+        meta.displayName(Lang.getComponent("armor.boots.name"));
+        meta.lore(Lang.getComponentList("armor.boots.lore"));
 
         meta.getPersistentDataContainer().set(
                 PDCKeys.DRAGON_ARMOR,
