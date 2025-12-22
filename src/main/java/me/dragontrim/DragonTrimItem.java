@@ -15,8 +15,8 @@ public class DragonTrimItem {
 
         if (meta == null) return item;
 
-        meta.displayName(Lang.getComponent("tool.trim.name"));
-        meta.lore(Lang.getComponentList("tool.trim.lore"));
+        meta.displayName(Lang.getComponent("items.trim.name"));
+        meta.lore(Lang.getComponentList("items.trim.lore"));
 
 
         //  Markierung: DAS ist ein Dragon Trim
