@@ -2,6 +2,7 @@ package me.dragontrim;
 
 import me.dragontrim.lang.Lang;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -18,8 +19,12 @@ public class DragonTrimItem {
         meta.displayName(Lang.getComponent("items.trim.name"));
         meta.lore(Lang.getComponentList("items.trim.lore"));
 
+        // Eigenes Dragon-Trim-Icon
+        meta.setItemModel(
+                new NamespacedKey("dragonstuff", "dragon_trim")
+        );
 
-        //  Markierung: DAS ist ein Dragon Trim
+        // Bestehende Trim-Erkennung beibehalten
         meta.getPersistentDataContainer().set(
                 PDCKeys.DRAGON_TRIM,
                 PersistentDataType.BYTE,
