@@ -1,0 +1,35 @@
+DragonStuff Resource Pack 26.3
+COPYRIGHT AND PERMITTED USE
+
+Copyright (c) 2026 mcsnack.
+
+1. OWNERSHIP
+The original pixel art, textures, item artwork, armor artwork, Elytra artwork,
+and other original visual assets independently created by mcsnack for
+DragonStuff are protected by copyright. All rights in these original assets
+are reserved unless expressly granted below.
+
+2. PERMITTED USE
+You may download, install, and use the Resource Pack for personal Minecraft
+gameplay, including playing on compatible servers.
+
+3. RESTRICTIONS
+Except where applicable law permits otherwise, you may not redistribute,
+reupload, sell, or incorporate the original assets owned by mcsnack into
+other publicly distributed resource packs or projects without prior
+permission from mcsnack.
+
+4. THIRD-PARTY MATERIAL
+This notice applies only to material for which mcsnack holds the necessary
+rights. Any third-party material, including any remaining assets derived
+from DragonLoot, remains subject to the applicable third-party copyrights,
+licenses, and attribution requirements. Nothing in this notice overrides
+those licenses. Do not remove third-party license or attribution notices
+until the relevant third-party material has been completely removed.
+
+5. DISCLAIMER
+DragonStuff is an independent fan project and is not affiliated with
+Mojang Studios or Microsoft. Minecraft is a trademark of Mojang Studios.
+
+For permissions beyond those granted here, contact the project owner
+through: https://github.com/mcsnack/DragonStuff
