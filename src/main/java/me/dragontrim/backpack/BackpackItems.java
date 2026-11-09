@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
@@ -45,26 +46,53 @@ public final class BackpackItems {
     }
 
     public ItemStack create(Material type, int tier, UUID id) {
+        return create(type, tier, id, null);
+    }
+
+    /** Erstellt das Backpack-Item und zeigt nur bei vorhandenem Inhalt den Status Full. */
+    public ItemStack create(Material type, int tier, UUID id, ItemStack[] contents) {
         if (type == null || !Tag.SHULKER_BOXES.isTagged(type)) {
             type = DEFAULT_TYPE;
         }
         int safeTier = Math.max(1, Math.min(MAX_TIER, tier));
+        UUID safeId = id == null ? UUID.randomUUID() : id;
         ItemStack item = new ItemStack(type);
         item.editMeta(meta -> {
             meta.displayName(title(safeTier));
             List<Component> lore = new ArrayList<>();
             lore.add(Component.text("Shift + F oder Rechtsklick zum Öffnen", NamedTextColor.GRAY)
                     .decoration(TextDecoration.ITALIC, false));
+            if (hasContents(contents)) {
+                lore.add(Component.text("Full", NamedTextColor.GREEN)
+                        .decoration(TextDecoration.ITALIC, false));
+            }
             if (safeTier < MAX_TIER) {
                 lore.add(Component.text("Upgrade: Dragon-Trim + Netherite-Barren", NamedTextColor.DARK_GRAY)
                         .decoration(TextDecoration.ITALIC, false));
             }
             meta.lore(lore);
+            // Unterdrückt die Vanilla-Zeile "Empty"; der Status wird durch unsere Lore angezeigt.
+            meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
             meta.getPersistentDataContainer().set(tierKey, PersistentDataType.INTEGER, safeTier);
-            meta.getPersistentDataContainer().set(idKey, PersistentDataType.STRING,
-                    (id == null ? UUID.randomUUID() : id).toString());
+            meta.getPersistentDataContainer().set(idKey, PersistentDataType.STRING, safeId.toString());
         });
         return item;
+    }
+
+    public static boolean hasContents(ItemStack[] contents) {
+        if (contents == null) return false;
+        for (ItemStack item : contents) {
+            if (item != null && !item.getType().isAir() && item.getAmount() > 0) return true;
+        }
+        return false;
+    }
+
+    NamespacedKey tierKey() {
+        return tierKey;
+    }
+
+    NamespacedKey idKey() {
+        return idKey;
     }
 
     public Integer tier(ItemStack item) {
