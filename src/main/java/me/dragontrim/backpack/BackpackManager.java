@@ -161,14 +161,27 @@ public final class BackpackManager implements Listener {
         }
     }
 
-    @EventHandler
+    /**
+     * Lässt DragonBackPacks normal platzieren und verknüpft den platzierten
+     * Shulker-Block über seine UUID mit dem persistent gespeicherten Inhalt.
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent event) {
         ItemStack placed = event.getItemInHand();
+
+        // Wichtig: Hier NICHT pauschal abbrechen – der Spieler soll platzieren können.
         if (!items.isBackpack(placed)) return;
 
         UUID id = items.id(placed);
         Integer tier = items.tier(placed);
-        if (id == null || tier == null || !(event.getBlockPlaced().getState() instanceof TileState tile)) {
+        if (id == null || tier == null) {
+            plugin.getLogger().warning("DragonBackPack konnte nicht platziert werden: ID oder Tier fehlt.");
+            event.setCancelled(true);
+            return;
+        }
+
+        if (!(event.getBlockPlaced().getState() instanceof TileState tile)) {
+            plugin.getLogger().warning("DragonBackPack konnte nicht platziert werden: Der Block besitzt keinen TileState.");
             event.setCancelled(true);
             return;
         }
@@ -176,7 +189,13 @@ public final class BackpackManager implements Listener {
         PersistentDataContainer pdc = tile.getPersistentDataContainer();
         pdc.set(blockIdKey, PersistentDataType.STRING, id.toString());
         pdc.set(blockTierKey, PersistentDataType.INTEGER, tier);
-        tile.update(true, false);
+
+        if (!tile.update(true, false)) {
+            plugin.getLogger().warning("DragonBackPack-Daten konnten am platzierten Block nicht gespeichert werden.");
+            event.setCancelled(true);
+            return;
+        }
+
         storage.registerOwner(id, event.getPlayer().getUniqueId(), event.getPlayer().getName(), tier);
     }
 
