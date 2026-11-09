@@ -1,8 +1,8 @@
 # 🐉 DragonStuff
 
-**DragonStuff** ist ein Minecraft-Java-Projekt mit einem **Paper-Plugin** und dem dazugehörigen **DragonStuff Resource Pack 26.3**. Gemeinsam erweitern sie das Spiel um dracheninspirierte Ausrüstung in einem dunklen, violetten Stil.
+**DragonStuff** ist ein Minecraft-Java-Projekt mit einem **Paper-Plugin** und dem dazugehörigen **DragonStuff Resource Pack 26.3**. Gemeinsam erweitern sie das Spiel um dracheninspirierte Ausrüstung und zusätzliche Spielmechaniken in einem dunklen, violetten Stil.
 
-> **Projektstatus:** In Entwicklung. Das Resource Pack wird derzeit mit vollständig neu gepixelten, eigenständigen Designs überarbeitet. Angaben zu Funktionen beziehen sich auf den aktuellen Entwicklungsstand; Details können sich bis zur nächsten Veröffentlichung ändern.
+> **Projektstatus:** In Entwicklung. Das Resource Pack wird derzeit mit eigenständigen Designs überarbeitet. Angaben zu Funktionen beziehen sich auf den jeweiligen Entwicklungsstand und können sich bis zur nächsten Veröffentlichung ändern.
 
 ## ✨ Funktionen
 
@@ -15,28 +15,50 @@
 | Rüstung | Dragon Helmet, Dragon Chestplate, Dragon Leggings, Dragon Boots |
 | Flügel | Dragon Wings (Elytra) |
 | Schmiedematerial | Dragon-Trim |
+| Rucksäcke | DragonBackPack (Tier 1–4) |
 
 Das Plugin verwaltet die benutzerdefinierten Gegenstände, ihre Kennzeichnungen und die dazugehörigen Spielmechaniken. Das Resource Pack stellt die Texturen und Modelle bereit, einschließlich der Darstellung von Rüstung und Flügeln am Spieler.
 
+### DragonBackPack
+
+DragonBackPacks sind mehrstufige Rucksäcke auf Basis von Shulker-Boxen. Jeder Rucksack besitzt eine eigene ID; seine Inhalte werden separat gespeichert, damit sie beim Öffnen, Platzieren und Abbauen erhalten bleiben.
+
+| Stufe | Inventarplätze |
+| --- | ---: |
+| Tier 1 | 27 |
+| Tier 2 | 36 |
+| Tier 3 | 45 |
+| Tier 4 | 54 |
+
+**Herstellung und Upgrades**
+
+- **Neuen Rucksack herstellen:** Dragon-Trim + leere Shulker-Box + Netherite-Barren am Schmiedetisch.
+- **Upgrade:** Einen vorhandenen DragonBackPack zusammen mit Dragon-Trim und Netherite-Barren am Schmiedetisch einsetzen.
+- Befüllte normale Shulker-Boxen werden als Ausgangsmaterial nicht angenommen, damit ihr Inhalt nicht verloren geht.
+- Ein Rucksack kann normal als Shulker-Block platziert werden. Beim Abbauen erhältst du den DragonBackPack mit derselben ID zurück.
+- Rechtsklick auf einen platzierten Rucksack öffnet sein Inventar. In der Hand öffnet Rechtsklick in die Luft den Rucksack; alternativ funktioniert **Shift + F**.
+- Der Tooltip blendet die Vanilla-Zeile **„Empty“** aus. **„Full“** wird angezeigt, sobald mindestens ein Inventarplatz belegt ist.
+
 ### Schmiedetisch
 
-DragonStuff verwendet eigene Schmiederezepte mit einem **Dragon-Trim** als Vorlage. Ein Beispiel ist:
+DragonStuff verwendet eigene Schmiederezepte mit einem **Dragon-Trim** als Vorlage. Ein Beispiel für Ausrüstung ist:
 
 `Dragon-Trim + Netherite Chestplate + Diamond → Dragon Chestplate`
 
-Die Dragon Wings sind ebenfalls als Teil des Ausrüstungssystems vorgesehen. Welche Rezepte in einer veröffentlichten Version verfügbar sind, hängt vom jeweiligen Plugin-Build ab.
+Die Dragon Wings sind ebenfalls Teil des Ausrüstungssystems. Welche Rezepte verfügbar sind, hängt vom jeweiligen Plugin-Build ab.
 
 ## 📦 Bestandteile des Projekts
 
 **Paper-Plugin**
 
-- Stellt die benutzerdefinierten Gegenstände und ihre Eigenschaften bereit.
-- Verarbeitet die Schmiedetisch-Rezepte und die zugehörige Item-Erkennung.
+- Stellt die benutzerdefinierten Gegenstände, Rucksäcke und ihre Eigenschaften bereit.
+- Verarbeitet Schmiedetisch-Rezepte, Backpack-Inventare und die zugehörigen Spielmechaniken.
+- Speichert Backpack-Inhalte und Metadaten im Plugin-Datenordner.
 - Benötigt einen kompatiblen Paper-Server.
 
 **DragonStuff Resource Pack 26.3**
 
-- Enthält die Item-Texturen, Modelle und Equipment-Grafiken.
+- Enthält Item-Texturen, Modelle und Equipment-Grafiken.
 - Ergänzt die Darstellung der Gegenstände im Inventar und am Spieler.
 - Fügt **allein** keine neuen Items oder Rezepte hinzu.
 
@@ -47,7 +69,7 @@ Die Dragon Wings sind ebenfalls als Teil des Ausrüstungssystems vorgesehen. Wel
 - **Java:** 25 für die aktuelle Entwicklungsumgebung
 - **Build-System:** Gradle (Wrapper im Projekt)
 
-> Prüfe vor dem Einsatz, ob dein Server-Build, die Java-Version und die veröffentlichte Plugin-Datei zueinander passen.
+> Prüfe vor dem Einsatz, ob Server-Build, Java-Version, Plugin-Datei und Resource Pack zueinander passen.
 
 ## 🚀 Installation
 
@@ -66,30 +88,45 @@ Die Dragon Wings sind ebenfalls als Teil des Ausrüstungssystems vorgesehen. Wel
 4. Aktiviere das Paket und verschiebe es bei Bedarf über ältere, möglicherweise kollidierende Packs.
 5. Lade die Ressourcen bei Bedarf mit **F3 + T** neu.
 
-**Wichtig:** Für die vollständige Funktion werden **Plugin und Resource Pack** benötigt.
+**Wichtig:** Für die vollständige Darstellung der DragonStuff-Gegenstände werden **Plugin und Resource Pack** benötigt.
+
+## 🧰 Befehle und Berechtigungen
+
+| Befehl | Beschreibung |
+| --- | --- |
+| `/dragon <item>` | Gibt das angegebene DragonStuff-Item aus (z. B. `/dragon chestplate`, `/dragon sword`, `/dragon wings`, `/dragon trim`). |
+| `/backpack` | Öffnet die DragonBackPack-Adminverwaltung mit allen registrierten Rucksäcken. |
+| `/backpack <Spielername>` | Filtert die Adminverwaltung nach einem Spieler. |
+
+**Berechtigung für die Backpack-Administration:** `dragonstuff.backpack.admin` (standardmäßig OP).
+
+Für den normalen Gebrauch und das Öffnen eigener Rucksäcke ist der Admin-Befehl nicht erforderlich.
 
 ## 👨‍💻 Für Entwickler
 
 Das Projekt wird mit Gradle gebaut. Unter Windows kannst du im Projektverzeichnis ausführen:
 
 ```powershell
-.\gradlew.bat build
+.\gradlew.bat clean build
 ```
 
 Die erzeugten JAR-Dateien findest du üblicherweise unter `build/libs/`.
 
-Der Plugin-Code verwendet unter anderem die Klassen `DragonTrim`, `DragonItems`, `DragonSmithingRecipes` und `DragonSmithingListener`. Die benutzerdefinierten Items werden über Persistent Data Container (PDC) gekennzeichnet; ihre Modelle nutzen den Namespace `dragonstuff`.
+Wichtige Plugin-Klassen sind unter anderem `DragonTrim`, `DragonItems`, `DragonSmithingRecipes`, `DragonSmithingListener` sowie die Klassen im Paket `me.dragontrim.backpack`. Benutzerdefinierte Gegenstände und platzierte Rucksäcke werden über Persistent Data Container (PDC) gekennzeichnet; die Modelle nutzen den Namespace `dragonstuff`.
 
 ## 📁 Projektaufbau
 
-Die konkrete Verzeichnisstruktur kann sich mit der Entwicklung ändern. Eine mögliche Aufteilung ist:
+Die konkrete Verzeichnisstruktur kann sich mit der Entwicklung ändern. Die zentralen Bereiche sind:
 
 ```text
 DragonStuff/
-├── src/                      # Java-Quellcode und Plugin-Ressourcen
+├── src/main/java/             # Java-Quellcode des Plugins
+│   └── me/dragontrim/
+│       └── backpack/          # DragonBackPack-System
+├── src/main/resources/        # Plugin-Konfiguration und Sprache
 ├── build.gradle               # Gradle-Konfiguration
 ├── settings.gradle
-├── gradlew.bat                 # Gradle-Wrapper (Windows)
+├── gradlew.bat                # Gradle-Wrapper (Windows)
 ├── resourcepack/              # Dateien des Resource Packs
 │   ├── README.md
 │   ├── COPYRIGHT.txt
@@ -99,10 +136,12 @@ DragonStuff/
 
 ## 🔧 Fehlerbehebung
 
-- **Item zeigt eine Vanilla-Textur:** Ist das richtige Resource Pack aktiviert? Stammt das Item aus der aktuellen Plugin-Version?
-- **Rüstung oder Elytra wird falsch dargestellt:** Prüfe die Equipment-Modelle im Pack und die Modellzuweisungen des Plugins.
-- **Schmiederezept funktioniert nicht:** Prüfe die verwendete Dragon-Trim-Vorlage, das Basis-Item und das Zusatzmaterial. Bei eigenen Items kann die interne PDC-Kennzeichnung entscheidend sein.
-- **Plugin startet nicht:** Kontrolliere die Minecraft-/Paper-Version, die Java-Version und die Fehlermeldungen in der Serverkonsole.
+- **Item zeigt eine Vanilla-Textur:** Prüfe, ob das richtige Resource Pack aktiviert ist und ob das Item aus einer passenden Plugin-Version stammt.
+- **Rüstung oder Elytra wird falsch dargestellt:** Prüfe, ob Plugin und Resource Pack zusammenpassen.
+- **Schmiederezept funktioniert nicht:** Prüfe Dragon-Trim, Basis-Item und Zusatzmaterial. Bei eigenen Items ist die interne PDC-Kennzeichnung entscheidend.
+- **Rucksack lässt sich nicht platzieren:** Prüfe, ob die aktuelle DragonStuff-Version installiert ist und ob ein anderes Plugin das Platzieren von Shulker-Boxen verhindert.
+- **Rucksack-Inhalt scheint nicht aktuell:** Schließe das Backpack-Inventar regulär, damit die Änderungen gespeichert werden.
+- **Plugin startet nicht:** Kontrolliere Minecraft-/Paper-Version, Java-Version und die Fehlermeldungen in der Serverkonsole.
 
 ## © Copyright, Credits und Lizenzen
 
@@ -120,15 +159,3 @@ Minecraft ist eine Marke von Mojang Studios. DragonStuff ist ein unabhängiges F
 ---
 
 *DragonStuff – Dragon-inspired gear for Minecraft Java Edition.*
-
-### 🐉 DragonStuff – Befehle
-
-
-/dragon <sword | pickaxe | axe | shovel | hoe>
-/dragon <helmet | chestplate | leggings | boots>
-/dragon <wings | trim>
-
-
-**Beispiel:** `/dragon chestplate`
-
-*Hinweis: Für die Verwendung können OP-Rechte oder entsprechende Berechtigungen erforderlich sein.*
