@@ -27,6 +27,18 @@ Das Resource Pack enthält beziehungsweise erhält eigene Darstellungen für:
 
 **Hinweis:** Das Resource Pack verändert ausschließlich die Darstellung. Neue Items, Eigenschaften und Schmiederezepte stellt das Plugin bereit.
 
+## DragonBackPack-Farbmodelle
+
+Das separate Add-on **DragonBackpack_Colors_26.3_Addon.zip** enthält 16 farbabhängige 3D-Itemmodelle samt Texturen für DragonBackPacks.
+
+**Testinstallation:** Lege das Add-on als eigenes ZIP in den Ordner `resourcepacks` und aktiviere es **oberhalb** von DragonStuff Resource Pack 26.3.
+
+**Gemeinsame Veröffentlichung:** Kopiere aus dem Add-on die Ordner `assets/dragonstuff/items`, `assets/dragonstuff/models/item` und `assets/dragonstuff/textures/item` in das Haupt-Resource-Pack. Behalte die bestehende `pack.mcmeta` des Hauptpacks bei.
+
+Die Modelle werden vom Plugin nur DragonBackPack-Items mit gültiger Backpack-ID und Tier-Kennung zugewiesen. Normale Shulker-Boxen und die Vanilla-Blockmodelle werden nicht überschrieben. Das neue 3D-Modell wird in dieser Version für das Item in Inventar, Hand und als Item-Drop verwendet; ein platzierter Rucksack bleibt vorerst ein normal dargestellter Shulker-Block.
+
+Der Entwurf und die Farbtexturen stammen von Jax. Die Nutzung und Anpassung für DragonStuff wurden vom Ersteller im Discord-Gespräch am 9. November 2026 gestattet. Details und Projektlink stehen in `CREDITS_BACKPACKS.txt`.
+
 ## Fehlerbehebung
 
 - **Vanilla-Textur statt DragonStuff-Textur:** Prüfe, ob das richtige Pack aktiviert ist und ältere Versionen deaktiviert sind.
