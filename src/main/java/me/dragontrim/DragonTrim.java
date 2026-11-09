@@ -1,84 +1,91 @@
 package me.dragontrim;
 
+import me.dragontrim.backpack.BackpackAdmin;
+import me.dragontrim.backpack.BackpackItems;
+import me.dragontrim.backpack.BackpackManager;
+import me.dragontrim.backpack.BackpackSmithing;
+import me.dragontrim.backpack.BackpackStorage;
 import me.dragontrim.lang.Lang;
 import org.bukkit.plugin.java.JavaPlugin;
-
 
 public class DragonTrim extends JavaPlugin {
 
     private static DragonTrim instance;
+    private BackpackManager backpackManager;
+    private BackpackSmithing backpackSmithing;
 
     public static DragonTrim getInstance() {
         return instance;
     }
 
     public void reloadPlugin() {
-        reloadConfig();  //Config Neuladen
-        Lang.load(this);    //sprache neu Laden
+        reloadConfig();
+        Lang.load(this);
         getLogger().info("DragonTrim reloaded (config + lang).");
     }
-
 
     @Override
     public void onEnable() {
         instance = this;
 
-        // config.yml laden / erstellen
         saveDefaultConfig();
-
-        // Lang
         Lang.load(this);
-
 
         // PersistentDataContainer Keys initialisieren
         PDCKeys.init(this);
 
-
-        // Amor Stats
+        // Armor Stats und Set-Bonus
         DragonArmorStats.init(this);
-
-        //Set Bonus
         new DragonArmorSetBonus(this);
 
-        // Rezepte Einbinden
+        // Bestehende Dragon-Trim-Rezepte
         DragonSmithingRecipes.register(this);
 
-        getServer().getPluginManager().registerEvents(
-                new DragonSmithingListener(),
-                this
+        // Bestehende Listener
+        getServer().getPluginManager().registerEvents(new DragonSmithingListener(), this);
+        getServer().getPluginManager().registerEvents(new DragonDurabilityListener(), this);
 
-        );
+        // DragonBackPack-System
+        BackpackItems backpackItems = new BackpackItems(this);
+        BackpackStorage backpackStorage = new BackpackStorage(this);
+        backpackManager = new BackpackManager(this, backpackItems, backpackStorage);
+        backpackSmithing = new BackpackSmithing(this, backpackItems);
+        BackpackAdmin backpackAdmin = new BackpackAdmin(this, backpackManager, backpackStorage);
 
+        backpackSmithing.register(DragonTrimItem::create);
 
-        getLogger().info("DragonTrim enabled!");
+        getServer().getPluginManager().registerEvents(backpackManager, this);
+        getServer().getPluginManager().registerEvents(backpackSmithing, this);
+        getServer().getPluginManager().registerEvents(backpackAdmin, this);
 
-        // Command registrieren
+        var backpackCommand = getCommand("backpack");
+        if (backpackCommand != null) {
+            backpackCommand.setExecutor(backpackAdmin);
+            backpackCommand.setTabCompleter(backpackAdmin);
+        } else {
+            getLogger().severe("Command /backpack fehlt in plugin.yml!");
+        }
+
+        // Bestehender /dragon-Command
         var command = getCommand("dragon");
         if (command != null) {
             command.setExecutor(new DragonCommand());
             command.setTabCompleter(new DragonTabCompleter());
         } else {
-            getLogger().severe("Command /dragon not found in plugin.yml!");
+            getLogger().severe("Command /dragon fehlt in plugin.yml!");
         }
 
-
-        // Listener registrieren
-        getServer().getPluginManager().registerEvents(
-                new DragonSmithingListener(),
-                this
-        );
-
-        getServer().getPluginManager().registerEvents(
-                new DragonDurabilityListener(),
-                this
-        );
-
+        getLogger().info("DragonTrim enabled!");
     }
 
     @Override
     public void onDisable() {
+        if (backpackManager != null) {
+            backpackManager.closeAll();
+        }
+        if (backpackSmithing != null) {
+            backpackSmithing.unregister();
+        }
         getLogger().info("DragonTrim disabled!");
     }
-
-
 }
