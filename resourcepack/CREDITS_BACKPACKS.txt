@@ -1,0 +1,11 @@
+DragonStuff – DragonBackPack design credits
+
+Original Shulker Box Backpacks design, model geometry and color textures: Jax.
+Used and adapted in DragonStuff with the creator's permission, confirmed in a Discord conversation on 9 November 2026.
+
+Original project:
+https://www.planetminecraft.com/texture-pack/shulker-box-backpacks/
+
+The DragonStuff integration uses the color-specific item models only for items
+marked with a valid DragonBackPack ID and tier by the DragonStuff plugin.
+Vanilla Shulker Box item models, textures and placed block models are not replaced.
