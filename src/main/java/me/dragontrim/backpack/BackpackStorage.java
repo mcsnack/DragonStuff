@@ -38,7 +38,7 @@ public final class BackpackStorage {
         try {
             stored = data == null ? new ItemStack[0]
                     : ItemStack.deserializeItemsFromBytes(Base64.getDecoder().decode(data));
-        } catch (IllegalArgumentException | RuntimeException ex) {
+        } catch (RuntimeException ex) {
             plugin.getLogger().severe("Backpack-Daten für " + id + " sind beschädigt: " + ex.getMessage());
             return new ItemStack[Math.max(27, size)];
         }
