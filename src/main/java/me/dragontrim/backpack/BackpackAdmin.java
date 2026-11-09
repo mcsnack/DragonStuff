@@ -109,11 +109,16 @@ public final class BackpackAdmin implements CommandExecutor, TabCompleter, Liste
             ItemStack item = new ItemStack(Material.PURPLE_SHULKER_BOX);
             item.editMeta(meta -> {
                 meta.displayName(BackpackItems.title(entry.tier()));
-                meta.lore(List.of(
-                        line("Besitzer: " + entry.ownerName(), NamedTextColor.GRAY),
-                        line("ID: " + entry.id().toString().substring(0, 8), NamedTextColor.DARK_GRAY),
-                        line("Klick zum Öffnen", NamedTextColor.YELLOW)
-                ));
+                ItemStack[] contents = storage.load(entry.id(), BackpackItems.slotsFor(entry.tier()));
+                java.util.ArrayList<Component> lore = new java.util.ArrayList<>();
+                lore.add(line("Besitzer: " + entry.ownerName(), NamedTextColor.GRAY));
+                lore.add(line("ID: " + entry.id().toString().substring(0, 8), NamedTextColor.DARK_GRAY));
+                if (BackpackItems.hasContents(contents)) {
+                    lore.add(line("Full", NamedTextColor.GREEN));
+                }
+                lore.add(line("Klick zum Öffnen", NamedTextColor.YELLOW));
+                meta.lore(lore);
+                meta.addItemFlags(org.bukkit.inventory.ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
             });
             holder.inventory.setItem(slot, item);
         }
