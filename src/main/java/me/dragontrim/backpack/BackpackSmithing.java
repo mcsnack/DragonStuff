@@ -24,11 +24,13 @@ public final class BackpackSmithing implements Listener {
 
     private final Plugin plugin;
     private final BackpackItems items;
+    private final BackpackStorage storage;
     private final NamespacedKey recipeKey;
 
-    public BackpackSmithing(Plugin plugin, BackpackItems items) {
+    public BackpackSmithing(Plugin plugin, BackpackItems items, BackpackStorage storage) {
         this.plugin = plugin;
         this.items = items;
+        this.storage = storage;
         this.recipeKey = new NamespacedKey(plugin, "backpack");
     }
 
@@ -68,7 +70,8 @@ public final class BackpackSmithing implements Listener {
         if (tier != null) {
             UUID id = items.id(base);
             event.setResult(id != null && tier < BackpackItems.MAX_TIER
-                    ? items.create(base.getType(), tier + 1, id) : null);
+                    ? items.create(base.getType(), tier + 1, id,
+                    storage.load(id, BackpackItems.slotsFor(tier))) : null);
             return;
         }
 

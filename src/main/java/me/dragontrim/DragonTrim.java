@@ -49,7 +49,7 @@ public class DragonTrim extends JavaPlugin {
         BackpackItems backpackItems = new BackpackItems(this);
         BackpackStorage backpackStorage = new BackpackStorage(this);
         backpackManager = new BackpackManager(this, backpackItems, backpackStorage);
-        backpackSmithing = new BackpackSmithing(this, backpackItems);
+        backpackSmithing = new BackpackSmithing(this, backpackItems, backpackStorage);
         BackpackAdmin backpackAdmin = new BackpackAdmin(this, backpackManager, backpackStorage);
 
         backpackSmithing.register(DragonTrimItem::create);

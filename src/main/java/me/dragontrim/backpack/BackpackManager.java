@@ -3,12 +3,18 @@ package me.dragontrim.backpack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
+import org.bukkit.block.Block;
+import org.bukkit.block.TileState;
 import org.bukkit.entity.Player;
+import org.bukkit.GameMode;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.ClickType;
@@ -24,24 +30,30 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-/** Öffnen, GUI, Speichern und Besitzer-Index für DragonBackPacks. */
+/** Öffnen, GUI, Platzieren, Abbauen und Besitzer-Index für DragonBackPacks. */
 public final class BackpackManager implements Listener {
 
     private final Plugin plugin;
     private final BackpackItems items;
     private final BackpackStorage storage;
+    private final NamespacedKey blockIdKey;
+    private final NamespacedKey blockTierKey;
     private final Map<UUID, Session> sessions = new HashMap<>();
 
     public BackpackManager(Plugin plugin, BackpackItems items, BackpackStorage storage) {
         this.plugin = plugin;
         this.items = items;
         this.storage = storage;
+        this.blockIdKey = new NamespacedKey(plugin, "placed_backpack_id");
+        this.blockTierKey = new NamespacedKey(plugin, "placed_backpack_tier");
     }
 
     private record Session(UUID id, UUID viewer, ItemStack[] contents) {}
@@ -94,6 +106,23 @@ public final class BackpackManager implements Listener {
         return item != null && !item.getType().isAir() && Tag.SHULKER_BOXES.isTagged(item.getType());
     }
 
+    private UUID placedId(Block block) {
+        if (block == null || !Tag.SHULKER_BOXES.isTagged(block.getType())) return null;
+        if (!(block.getState() instanceof TileState tile)) return null;
+        String raw = tile.getPersistentDataContainer().get(blockIdKey, PersistentDataType.STRING);
+        try {
+            return raw == null ? null : UUID.fromString(raw);
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
+    }
+
+    private int placedTier(Block block) {
+        if (!(block.getState() instanceof TileState tile)) return 1;
+        Integer tier = tile.getPersistentDataContainer().get(blockTierKey, PersistentDataType.INTEGER);
+        return tier == null ? 1 : Math.max(1, Math.min(BackpackItems.MAX_TIER, tier));
+    }
+
     @EventHandler
     public void onSwap(PlayerSwapHandItemsEvent event) {
         Player player = event.getPlayer();
@@ -111,21 +140,80 @@ public final class BackpackManager implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND || !items.isBackpack(event.getItem())) return;
-        Action action = event.getAction();
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (event.getAction() != Action.RIGHT_CLICK_AIR
+                && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-        if (action == Action.RIGHT_CLICK_AIR
-                || (action == Action.RIGHT_CLICK_BLOCK && event.getPlayer().isSneaking())) {
+        // Ein bereits platzierter DragonBackPack wird über seine Block-PDC erkannt.
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock() != null) {
+            UUID placedId = placedId(event.getClickedBlock());
+            if (placedId != null) {
+                event.setCancelled(true);
+                openById(event.getPlayer(), placedId, placedTier(event.getClickedBlock()));
+                return;
+            }
+        }
+
+        // In der Hand: Rechtsklick in die Luft öffnet; Rechtsklick auf einen Block platziert normal.
+        if (items.isBackpack(event.getItem()) && event.getAction() == Action.RIGHT_CLICK_AIR) {
             event.setCancelled(true);
             open(event.getPlayer(), event.getItem());
-        } else if (action == Action.RIGHT_CLICK_BLOCK) {
-            event.setUseItemInHand(Event.Result.DENY);
         }
     }
 
-    @EventHandler
+    /**
+     * Lässt DragonBackPacks normal platzieren und verknüpft den platzierten
+     * Shulker-Block über seine UUID mit dem persistent gespeicherten Inhalt.
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent event) {
-        if (items.isBackpack(event.getItemInHand())) event.setCancelled(true);
+        ItemStack placed = event.getItemInHand();
+
+        // Wichtig: Hier NICHT pauschal abbrechen – der Spieler soll platzieren können.
+        if (!items.isBackpack(placed)) return;
+
+        UUID id = items.id(placed);
+        Integer tier = items.tier(placed);
+        if (id == null || tier == null) {
+            plugin.getLogger().warning("DragonBackPack konnte nicht platziert werden: ID oder Tier fehlt.");
+            event.setCancelled(true);
+            return;
+        }
+
+        if (!(event.getBlockPlaced().getState() instanceof TileState tile)) {
+            plugin.getLogger().warning("DragonBackPack konnte nicht platziert werden: Der Block besitzt keinen TileState.");
+            event.setCancelled(true);
+            return;
+        }
+
+        PersistentDataContainer pdc = tile.getPersistentDataContainer();
+        pdc.set(blockIdKey, PersistentDataType.STRING, id.toString());
+        pdc.set(blockTierKey, PersistentDataType.INTEGER, tier);
+
+        if (!tile.update(true, false)) {
+            plugin.getLogger().warning("DragonBackPack-Daten konnten am platzierten Block nicht gespeichert werden.");
+            event.setCancelled(true);
+            return;
+        }
+
+        storage.registerOwner(id, event.getPlayer().getUniqueId(), event.getPlayer().getName(), tier);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBreak(BlockBreakEvent event) {
+        Block block = event.getBlock();
+        UUID id = placedId(block);
+        if (id == null) return;
+
+        int tier = placedTier(block);
+        ItemStack[] contents = storage.load(id, BackpackItems.slotsFor(tier));
+        ItemStack drop = items.create(block.getType(), tier, id, contents);
+
+        // Kein normaler Shulker-Drop: Er würde die Backpack-ID verlieren bzw. duplizieren.
+        event.setDropItems(false);
+        if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+            block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.5, 0.5), drop);
+        }
     }
 
     @EventHandler
@@ -172,10 +260,24 @@ public final class BackpackManager implements Listener {
         if (event.getInventory().getHolder() instanceof Holder holder) {
             flush(holder);
             Session session = sessions.remove(holder.id);
-            if (session != null) storage.save(session.id(), session.contents());
+            if (session != null) {
+                storage.save(session.id(), session.contents());
+                refreshHeldBackpacks(player, session.id(), session.contents());
+            }
             scan(player);
         } else if (event.getInventory().getType() == InventoryType.SMITHING && plugin.isEnabled()) {
             Bukkit.getScheduler().runTask(plugin, () -> scan(player));
+        }
+    }
+
+    /** Aktualisiert den Tooltip eines getragenen Rucksacks nach dem Schließen des Inventars. */
+    private void refreshHeldBackpacks(Player player, UUID id, ItemStack[] contents) {
+        for (int slot = 0; slot < player.getInventory().getSize(); slot++) {
+            ItemStack current = player.getInventory().getItem(slot);
+            if (!id.equals(items.id(current))) continue;
+            Integer tier = items.tier(current);
+            if (tier != null) player.getInventory().setItem(slot,
+                    items.create(current.getType(), tier, id, contents));
         }
     }
 
