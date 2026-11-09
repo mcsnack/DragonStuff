@@ -15,8 +15,29 @@
 | Rüstung | Dragon Helmet, Dragon Chestplate, Dragon Leggings, Dragon Boots |
 | Flügel | Dragon Wings (Elytra) |
 | Schmiedematerial | Dragon-Trim |
+| Rucksäcke | DragonBackPack (Tier 1–4) |
 
 Das Plugin verwaltet die benutzerdefinierten Gegenstände, ihre Kennzeichnungen und die dazugehörigen Spielmechaniken. Das Resource Pack stellt die Texturen und Modelle bereit, einschließlich der Darstellung von Rüstung und Flügeln am Spieler.
+
+### DragonBackPack
+
+DragonBackPacks sind mehrstufige Rucksäcke auf Basis von Shulker-Boxen. Jeder Rucksack besitzt eine eigene ID; seine Inhalte werden separat gespeichert, damit sie beim Öffnen, Platzieren und Abbauen erhalten bleiben.
+
+| Stufe | Inventarplätze |
+| --- | ---: |
+| Tier 1 | 27 |
+| Tier 2 | 36 |
+| Tier 3 | 45 |
+| Tier 4 | 54 |
+
+**Herstellung und Upgrades**
+
+- **Neuen Rucksack herstellen:** Dragon-Trim + leere Shulker-Box + Netherite-Barren am Schmiedetisch.
+- **Upgrade:** Einen vorhandenen DragonBackPack zusammen mit Dragon-Trim und Netherite-Barren am Schmiedetisch einsetzen.
+- Befüllte normale Shulker-Boxen werden als Ausgangsmaterial nicht angenommen, damit ihr Inhalt nicht verloren geht.
+- Ein Rucksack kann normal als Shulker-Block platziert werden. Beim Abbauen erhältst du den DragonBackPack mit derselben ID zurück.
+- Rechtsklick auf einen platzierten Rucksack öffnet sein Inventar. In der Hand öffnet Rechtsklick in die Luft den Rucksack; alternativ funktioniert **Shift + F**.
+- Der Tooltip blendet die Vanilla-Zeile **„Empty“** aus. **„Full“** wird angezeigt, sobald mindestens ein Inventarplatz belegt ist.
 
 ### Schmiedetisch
 
@@ -31,7 +52,8 @@ Die Dragon Wings sind ebenfalls als Teil des Ausrüstungssystems vorgesehen. Wel
 **Paper-Plugin**
 
 - Stellt die benutzerdefinierten Gegenstände und ihre Eigenschaften bereit.
-- Verarbeitet die Schmiedetisch-Rezepte und die zugehörige Item-Erkennung.
+- Verarbeitet Schmiedetisch-Rezepte, Backpack-Inventare und die zugehörigen Spielmechaniken.
+- Speichert Backpack-Inhalte und Metadaten im Plugin-Datenordner.
 - Benötigt einen kompatiblen Paper-Server.
 
 **DragonStuff Resource Pack 26.3**
@@ -68,12 +90,24 @@ Die Dragon Wings sind ebenfalls als Teil des Ausrüstungssystems vorgesehen. Wel
 
 **Wichtig:** Für die vollständige Funktion werden **Plugin und Resource Pack** benötigt.
 
+## 🧰 Befehle und Berechtigungen
+
+| Befehl | Beschreibung |
+| --- | --- |
+| `/dragon <item>` | Gibt das angegebene DragonStuff-Item aus (z. B. `/dragon chestplate`, `/dragon sword`, `/dragon wings`, `/dragon trim`). |
+| `/backpack` | Öffnet die DragonBackPack-Adminverwaltung mit allen registrierten Rucksäcken. |
+| `/backpack <Spielername>` | Filtert die Adminverwaltung nach einem Spieler. |
+
+**Berechtigung für die Backpack-Administration:** `dragonstuff.backpack.admin` (standardmäßig OP).
+
+Für den normalen Gebrauch und das Öffnen eigener Rucksäcke ist der Admin-Befehl nicht erforderlich.
+
 ## 👨‍💻 Für Entwickler
 
 Das Projekt wird mit Gradle gebaut. Unter Windows kannst du im Projektverzeichnis ausführen:
 
 ```powershell
-.\gradlew.bat build
+.\gradlew.bat clean build
 ```
 
 Die erzeugten JAR-Dateien findest du üblicherweise unter `build/libs/`.
@@ -102,6 +136,8 @@ DragonStuff/
 - **Item zeigt eine Vanilla-Textur:** Ist das richtige Resource Pack aktiviert? Stammt das Item aus der aktuellen Plugin-Version?
 - **Rüstung oder Elytra wird falsch dargestellt:** Prüfe die Equipment-Modelle im Pack und die Modellzuweisungen des Plugins.
 - **Schmiederezept funktioniert nicht:** Prüfe die verwendete Dragon-Trim-Vorlage, das Basis-Item und das Zusatzmaterial. Bei eigenen Items kann die interne PDC-Kennzeichnung entscheidend sein.
+- **Rucksack lässt sich nicht platzieren:** Prüfe, ob die aktuelle DragonStuff-Version installiert ist und ob ein anderes Plugin das Platzieren von Shulker-Boxen verhindert.
+- **Rucksack-Inhalt scheint nicht aktuell:** Schließe das Backpack-Inventar regulär, damit die Änderungen gespeichert werden.
 - **Plugin startet nicht:** Kontrolliere die Minecraft-/Paper-Version, die Java-Version und die Fehlermeldungen in der Serverkonsole.
 
 ## © Copyright, Credits und Lizenzen
