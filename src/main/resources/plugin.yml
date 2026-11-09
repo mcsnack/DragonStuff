@@ -7,8 +7,14 @@ commands:
   dragon:
     description: Dragon items
     usage: /dragon <trim|sword|pickaxe|axe|shovel|hoe|helmet|chestplate|leggings|boots|wings|reload>
-
+  backpack:
+    description: Öffnet die DragonBackPack-Adminverwaltung
+    usage: /backpack [Spielername]
+    permission: dragonstuff.backpack.admin
 
 permissions:
   dragontrim.admin:
+    default: op
+  dragonstuff.backpack.admin:
+    description: Erlaubt die Verwaltung aller DragonBackPacks
     default: op
