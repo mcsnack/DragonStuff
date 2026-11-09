@@ -8,8 +8,10 @@ import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.TileState;
 import org.bukkit.entity.Player;
+import org.bukkit.GameMode;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -178,7 +180,7 @@ public final class BackpackManager implements Listener {
         storage.registerOwner(id, event.getPlayer().getUniqueId(), event.getPlayer().getName(), tier);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
         UUID id = placedId(block);
@@ -190,7 +192,9 @@ public final class BackpackManager implements Listener {
 
         // Kein normaler Shulker-Drop: Er würde die Backpack-ID verlieren bzw. duplizieren.
         event.setDropItems(false);
-        block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.5, 0.5), drop);
+        if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+            block.getWorld().dropItemNaturally(block.getLocation().add(0.5, 0.5, 0.5), drop);
+        }
     }
 
     @EventHandler
