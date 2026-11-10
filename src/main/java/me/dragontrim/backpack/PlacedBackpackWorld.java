@@ -17,8 +17,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import io.papermc.paper.event.player.PrePlayerAttackEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -168,7 +168,7 @@ public final class PlacedBackpackWorld implements Listener {
         World world = blockLocation.getWorld();
         if (world == null || !Tag.SHULKER_BOXES.isTagged(material)) return false;
 
-        Location displayLocation = blockLocation.clone().add(0.5, 0.5, 0.5);
+        Location displayLocation = blockLocation.clone().add(0.5, 0.0, 0.5);
         Location hitboxLocation = blockLocation.clone().add(0.5, 0.0, 0.5);
 
         ItemStack renderItem = items.create(material, tier, id,
@@ -221,7 +221,7 @@ public final class PlacedBackpackWorld implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBackpackRightClick(PlayerInteractAtEntityEvent event) {
+    public void onBackpackRightClick(PlayerInteractEntityEvent event) {
         if (event.getHand() != EquipmentSlot.HAND) return;
 
         Entity clicked = event.getRightClicked();
@@ -236,13 +236,13 @@ public final class PlacedBackpackWorld implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBackpackAttack(EntityDamageByEntityEvent event) {
-        Entity attacked = event.getEntity();
+    public void onBackpackAttack(PrePlayerAttackEntityEvent event) {
+        Entity attacked = event.getAttacked();
         if (!isBackpackEntity(attacked, ROLE_HITBOX)) return;
 
-        // Die unsichtbare Interaction-Entity darf keinen Schaden durch Spieler oder andere Quellen nehmen.
+        // Vor dem eigentlichen Angriff abbrechen, damit die Hitbox nicht beschädigt wird.
         event.setCancelled(true);
-        if (!(event.getDamager() instanceof Player player)) return;
+        Player player = event.getPlayer();
 
         GameMode gameMode = player.getGameMode();
         if (gameMode != GameMode.SURVIVAL && gameMode != GameMode.CREATIVE) return;
