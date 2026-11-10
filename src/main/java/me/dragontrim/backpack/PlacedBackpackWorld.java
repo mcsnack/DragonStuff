@@ -235,12 +235,15 @@ public final class PlacedBackpackWorld implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBackpackAttack(PrePlayerAttackEntityEvent event) {
         Entity attacked = event.getAttacked();
         if (!isBackpackEntity(attacked, ROLE_HITBOX)) return;
+        // Andere Plugins dürfen den Abbau weiterhin ausdrücklich blockieren.
+        if (event.isCancelled() && event.willAttack()) return;
 
-        // Vor dem eigentlichen Angriff abbrechen, damit die Hitbox nicht beschädigt wird.
+        // Interaction-Entities melden Angriffe teils bereits als abgebrochen,
+        // weil sie keinen normalen Schaden nehmen. Wir verwenden den Angriff hier als Abbauaktion.
         event.setCancelled(true);
         Player player = event.getPlayer();
 
