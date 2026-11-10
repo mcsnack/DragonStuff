@@ -1,5 +1,5 @@
 name: DragonTrim
-version: 1.0.0
+version: ${version}
 main: me.dragontrim.DragonTrim
 api-version: 1.21
 
