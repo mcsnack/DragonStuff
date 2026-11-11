@@ -179,7 +179,7 @@ public final class PlacedBackpackWorld implements Listener {
         if (world == null || !Tag.SHULKER_BOXES.isTagged(material)) return false;
 
         Location displayLocation = blockLocation.clone().add(0.5, 1.0, 0.5);
-        Location hitboxLocation = blockLocation.clone().add(0.5, 1.0, 0.5);
+        Location hitboxLocation = blockLocation.clone().add(0.5, 0.5, 0.5);
 
         ItemStack renderItem = items.create(material, tier, id,
                 storage.load(id, BackpackItems.slotsFor(tier)));
