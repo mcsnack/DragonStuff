@@ -179,7 +179,8 @@ public final class PlacedBackpackWorld implements Listener {
         try {
             display = world.spawn(displayLocation, ItemDisplay.class, entity -> {
                 entity.setItemStack(renderItem);
-                entity.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.FIXED);
+                // NONE ignoriert den item-frame/fixed-Transform der Item-JSON, der das Modell um 90 Grad kippt.
+                entity.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.NONE);
                 entity.setRotation(yaw, 0.0F);
                 entity.setPersistent(true);
                 entity.setGravity(false);
