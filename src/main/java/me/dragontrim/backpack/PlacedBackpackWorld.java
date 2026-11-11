@@ -27,6 +27,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.World;
+import org.bukkit.util.Transformation;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.Set;
 import java.util.UUID;
@@ -110,6 +113,13 @@ public final class PlacedBackpackWorld implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onChunkLoad(ChunkLoadEvent event) {
+        // Bereits platzierte Rucksack-Displays beim erneuten Laden auf die stehende Darstellung umstellen.
+        for (Entity entity : event.getChunk().getEntities()) {
+            if (entity instanceof ItemDisplay display && isBackpackEntity(display, ROLE_DISPLAY)) {
+                configureDisplay(display);
+            }
+        }
+
         for (BlockState state : event.getChunk().getTileEntities()) {
             if (!(state instanceof TileState tile)) continue;
             if (!Tag.SHULKER_BOXES.isTagged(state.getType())) continue;
@@ -179,13 +189,8 @@ public final class PlacedBackpackWorld implements Listener {
         try {
             display = world.spawn(displayLocation, ItemDisplay.class, entity -> {
                 entity.setItemStack(renderItem);
-                // NONE ignoriert den item-frame/fixed-Transform der Item-JSON, der das Modell um 90 Grad kippt.
-                entity.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.NONE);
+                configureDisplay(entity);
                 entity.setRotation(yaw, 0.0F);
-                entity.setPersistent(true);
-                entity.setGravity(false);
-                entity.setInvulnerable(true);
-                entity.setSilent(true);
                 markEntity(entity, ROLE_DISPLAY, material, id, tier);
             });
 
@@ -210,6 +215,21 @@ public final class PlacedBackpackWorld implements Listener {
             plugin.getLogger().severe("Could not spawn the DragonBackPack display entities: " + exception.getMessage());
             return false;
         }
+    }
+
+    /** Konfiguriert das ItemDisplay als aufrechten Welt-Rucksack statt als flaches Item-Frame-Modell. */
+    private void configureDisplay(ItemDisplay display) {
+        display.setItemDisplayTransform(ItemDisplay.ItemDisplayTransform.NONE);
+        display.setTransformation(new Transformation(
+                new Vector3f(0.0F, 0.0F, 0.0F),
+                new Quaternionf(),
+                new Vector3f(2.0F, 2.0F, 2.0F),
+                new Quaternionf()
+        ));
+        display.setPersistent(true);
+        display.setGravity(false);
+        display.setInvulnerable(true);
+        display.setSilent(true);
     }
 
     private void markEntity(Entity entity, String role, Material material, UUID id, int tier) {
