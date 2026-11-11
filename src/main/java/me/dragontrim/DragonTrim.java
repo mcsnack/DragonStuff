@@ -1,10 +1,12 @@
 package me.dragontrim;
 
 import me.dragontrim.backpack.BackpackAdmin;
+import me.dragontrim.backpack.BackpackDyeListener;
 import me.dragontrim.backpack.BackpackItems;
 import me.dragontrim.backpack.BackpackManager;
 import me.dragontrim.backpack.BackpackSmithing;
 import me.dragontrim.backpack.BackpackStorage;
+import me.dragontrim.backpack.PlacedBackpackWorld;
 import me.dragontrim.lang.Lang;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -57,6 +59,10 @@ public class DragonTrim extends JavaPlugin {
         getServer().getPluginManager().registerEvents(backpackManager, this);
         getServer().getPluginManager().registerEvents(backpackSmithing, this);
         getServer().getPluginManager().registerEvents(backpackAdmin, this);
+        getServer().getPluginManager().registerEvents(
+                new BackpackDyeListener(this, backpackItems, backpackStorage), this);
+        getServer().getPluginManager().registerEvents(
+                new PlacedBackpackWorld(this, backpackItems, backpackStorage, backpackManager), this);
 
         var backpackCommand = getCommand("backpack");
         if (backpackCommand != null) {

@@ -38,6 +38,9 @@ DragonBackPacks sind mehrstufige Rucksäcke auf Basis von Shulker-Boxen. Jeder R
 - Ein Rucksack kann normal als Shulker-Block platziert werden. Beim Abbauen erhältst du den DragonBackPack mit derselben ID zurück.
 - Rechtsklick auf einen platzierten Rucksack öffnet sein Inventar. In der Hand öffnet Rechtsklick in die Luft den Rucksack; alternativ funktioniert **Shift + F**.
 - Der Tooltip blendet die Vanilla-Zeile **„Empty“** aus. **„Full“** wird angezeigt, sobald mindestens ein Inventarplatz belegt ist.
+- DragonBackPacks können mit den normalen Minecraft-Färberezepten umgefärbt werden. UUID, Tier-Stufe und gespeicherter Inhalt bleiben dabei erhalten.
+- Die neue Optik wird ausschließlich DragonBackPack-Items mit gültiger Plugin-Kennung zugewiesen. Normale Shulker-Boxen behalten ihre Vanilla-Darstellung.
+- Das Item-Modell folgt der Shulker-Farbe: Orange = Fox, Black = Panda, Blue = Axolotl, Green = Frog, Lime = Alex, Light Blue = Steve, Brown = Teddy Bear, Light Gray = Rainbow Sheep, Pink = Pig, Purple = Enderman, White = Penguin, Yellow = Bee. Red, Magenta, Cyan und Gray sind ebenfalls als eigene Farbvarianten enthalten.
 
 ### Schmiedetisch
 
@@ -89,6 +92,14 @@ Die Dragon Wings sind ebenfalls als Teil des Ausrüstungssystems vorgesehen. Wel
 5. Lade die Ressourcen bei Bedarf mit **F3 + T** neu.
 
 **Wichtig:** Für die vollständige Funktion werden **Plugin und Resource Pack** benötigt.
+
+#### DragonBackPack-Farbmodelle
+
+Für die Enderman-/Farbrucksack-Optik wird zusätzlich das **DragonBackPack Colors Add-on für Minecraft 26.3** benötigt. Es enthält die 16 Item-Definitionen, Modelle und Texturen. Das Add-on kann testweise als separates Ressourcenpaket oberhalb von DragonStuff aktiviert werden. Für eine gemeinsame Veröffentlichung werden die Ordner `assets/dragonstuff/items`, `assets/dragonstuff/models/item` und `assets/dragonstuff/textures/item` in das Haupt-Resource-Pack übernommen.
+
+Beim Färben eines DragonBackPacks wird das Vanilla-Färbeergebnis durch ein DragonBackPack mit derselben UUID, Tier-Stufe und denselben gespeicherten Inhalten ersetzt. Normale Shulker-Boxen und ihre Vanilla-Modelle bleiben unverändert.
+
+**Hinweis zur Welt-Darstellung:** In dieser Integration wird das neue 3D-Modell für DragonBackPack-Items in Inventar, Hand und als Item-Drop verwendet. Ein platzierter Rucksack bleibt vorerst ein normal dargestellter Shulker-Block.
 
 ## 🧰 Befehle und Berechtigungen
 

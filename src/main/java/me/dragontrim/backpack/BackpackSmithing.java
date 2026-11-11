@@ -75,8 +75,9 @@ public final class BackpackSmithing implements Listener {
             return;
         }
 
+        // Neue Rucksäcke übernehmen die Farbe der als Basis eingesetzten Shulker-Box.
         event.setResult(isEmptyShulker(base)
-                ? items.create(BackpackItems.DEFAULT_TYPE, 1, UUID.randomUUID()) : null);
+                ? items.create(base.getType(), 1, UUID.randomUUID()) : null);
     }
 
     /** Verhindert, dass Inhalte einer befüllten Shulker-Box beim Crafting verloren gehen. */

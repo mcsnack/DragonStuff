@@ -13,6 +13,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 /** Erzeugt und erkennt DragonBackPack-Items (Tier 1-4). */
@@ -56,7 +57,8 @@ public final class BackpackItems {
         }
         int safeTier = Math.max(1, Math.min(MAX_TIER, tier));
         UUID safeId = id == null ? UUID.randomUUID() : id;
-        ItemStack item = new ItemStack(type);
+        Material backpackType = type;
+        ItemStack item = new ItemStack(backpackType);
         item.editMeta(meta -> {
             meta.displayName(title(safeTier));
             List<Component> lore = new ArrayList<>();
@@ -71,12 +73,23 @@ public final class BackpackItems {
                         .decoration(TextDecoration.ITALIC, false));
             }
             meta.lore(lore);
+            // Nur echte DragonBackPacks erhalten das DragonStuff-Farbmodell.
+            meta.setItemModel(new NamespacedKey("dragonstuff", "backpack_" + colorName(backpackType)));
             // Unterdrückt die Vanilla-Zeile "Empty"; der Status wird durch unsere Lore angezeigt.
             meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
             meta.getPersistentDataContainer().set(tierKey, PersistentDataType.INTEGER, safeTier);
             meta.getPersistentDataContainer().set(idKey, PersistentDataType.STRING, safeId.toString());
         });
         return item;
+    }
+
+    private static String colorName(Material type) {
+        if (type == null || type == Material.SHULKER_BOX) return "purple";
+        String name = type.name();
+        if (name.endsWith("_SHULKER_BOX")) {
+            return name.substring(0, name.length() - "_SHULKER_BOX".length()).toLowerCase(Locale.ROOT);
+        }
+        return "purple";
     }
 
     public static boolean hasContents(ItemStack[] contents) {
